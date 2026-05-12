@@ -10,7 +10,9 @@ public class ProjetoIntegradorFinal {
         int opcaoPrincipal = 0;
         int opcaoCliente = 0;
         int opcaoContato = 0;
-        String[][] clientes = new String[0][8];
+        int opcaoRelatorio=0;
+        int clientesTamanhoMatriz=0;
+        String[][] clientes = new String[1][8];
         String[][] contatos = new String[0][5];
         do {
             opcaoPrincipal = menuPrincipal(sc);
@@ -28,7 +30,11 @@ public class ProjetoIntegradorFinal {
                             System.out.println("");
                         } else if (opcaoCliente == 1) {
                             //1 - Incluir cliente
+                            incluirCliente(clientes,sc,clientesTamanhoMatriz);
+                            clientes=aumentarMatrizClientes(clientes);
+                            clientesTamanhoMatriz++;
                         } else if (opcaoCliente == 2) {
+                            listarClientes(clientes,clientesTamanhoMatriz);
                             //2 - Listar clientes (todos os clientes)
 
                         } else if (opcaoCliente == 3) {
@@ -70,13 +76,26 @@ public class ProjetoIntegradorFinal {
                     } while (opcaoContato != 0);
                     break;
                 case 3: //3 - Relatórios
-                    //  Listar cliente etotal de cliente por contato
-
-                    //  Sumarização de dados
-                    //o Total de cliente
-                    //o Total de contatos
-                    //o Contatos por cliente (média)
-                    //o Clientes sem contato
+                    do {
+                        opcaoRelatorio = menuRelatorio(sc);
+                        switch (opcaoRelatorio){
+                            case 0:
+                                System.out.println("Saindo da aba de Relatorios");
+                                break;
+                            case 1:
+                                //  Listar cliente etotal de cliente por contato
+                                break;
+                            case 2:
+                                //  Sumarização de dados
+                                //o Total de cliente
+                                //o Total de contatos
+                                //o Contatos por cliente (média)
+                                //o Clientes sem contato
+                                break;
+                            default:
+                                System.out.println("Opcao invalida... Por favor digite uma opcao valida.");
+                        }
+                    }while(opcaoRelatorio!=0);
                     break;
                 default:
                     System.out.println("Opção Inválida");
@@ -129,66 +148,131 @@ public class ProjetoIntegradorFinal {
         return opcao;
     }
 
-    //Clientes 
-    //aumentarMatrizClientes
+    public static int menuRelatorio(Scanner input){
+        System.out.println("1 - Listar Clientes");
+        System.out.println("2 - Sumarização de Dados");
+        System.out.println("0 - Voltar");
+        int opcao = input.nextInt();
+        return opcao;
+    }
 
-////[...]
-   
+    //Clientes
+    //aumentarMatrizClientes
+    public static String[][] aumentarMatrizClientes(String[][] clientesAntiga){
+        int novaLinha=clientesAntiga.length +1;
+        int novaColuna=clientesAntiga[0].length;
+        String[][]novaMatrizClientes =new String[novaLinha][novaColuna];
+        for (int i=0;i<clientesAntiga.length;i++){
+            for (int j=0;j<clientesAntiga[i].length;j++){
+                novaMatrizClientes[i][j]=clientesAntiga[i][j];
+            }
+        }
+        return novaMatrizClientes;
+    }
+
     // incluirCliente
-    ////[...]
-    
+    public static void incluirCliente(String[][] incluirCliente,Scanner input,int limitadorMatriz){
+        for(int i=limitadorMatriz;i<incluirCliente.length;i++){
+            for(int j=0;j<incluirCliente[i].length;j++){
+                switch (j){
+                    case 0:
+                        incluirCliente[i][j]=String.valueOf(i+1);
+                        break;
+                    case 1:
+                        System.out.println("Nome: ");
+                        incluirCliente[i][j]=input.nextLine();
+                        break;
+                    case 2:
+                        System.out.println("Cpf: ");
+                        incluirCliente[i][j]=input.nextLine();
+                        break;
+                    case 3:
+                        System.out.println("Data de nascimento: ");
+                        incluirCliente[i][j]=input.nextLine();
+                        break;
+                    case 4:
+                        System.out.println("Sexo: ");
+                        incluirCliente[i][j]=input.nextLine();
+                        break;
+                    case 5:
+                        System.out.println("Cidade: ");
+                        incluirCliente[i][j]=input.nextLine();
+                        break;
+                    case 6:
+                        System.out.println("Estado: ");
+                        incluirCliente[i][j]=input.nextLine();
+                        break;
+                    case 7:
+                        System.out.println("Status: ");
+                        incluirCliente[i][j]=input.nextLine();
+                        break;
+                }
+            }
+        }
+    }
+
     //listarClientesTabela
+    public static void listarClientes(String[][]listarCliente, int limitadorNull){
+        System.out.printf("%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|\n","Codigo","Nome","CPF/CNPJ","Data de nascimento","Sexo","Cidade","Estado","Status");
+        for (int i=0;i<limitadorNull;i++){
+            for(int j=0;j<listarCliente[i].length;j++){
+                System.out.printf("%-25.25s|",listarCliente[i][j]);
+            }
+            System.out.println();
+            System.out.println();
+        }
+    }
     ////[...]
-    
+
     // buscarClientePorCodigo
     ////[...]
-    
+
     // alterarCliente
     ////[...]
-    
+
     // apagarCliente
     ////[...]
-    
+
     // ordenarClientesPorNome
     ////[...]
-    
-    
-    
+
+
+
     //CONTATOS
-    
-    
+
+
     //aumentarMatrizContatos
     ////[...]
-    
+
     //incluirContato
     ////[...]
-    
+
     //listarContatosTabela
     ////[...]
-    
+
     //listarContatosPorCliente
     ////[...]
-    
+
     //alterarContato
     ////[...]
-    
+
     //apagarContato
     ////[...]
-    
-    
+
+
     //AUXILIARES
-    
-    
+
+
     //compararNomeCharPorChar
     ////[...]
-    
+
     //copiarLinha
     ////[...]
-    
+
     //limparLinha
     ////[...]
-    
+
     //trocarLinhas
     ////[...]
-    
+
 }
