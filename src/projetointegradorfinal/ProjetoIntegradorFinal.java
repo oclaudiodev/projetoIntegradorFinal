@@ -10,9 +10,9 @@ public class ProjetoIntegradorFinal {
         int opcaoPrincipal = 0;
         int opcaoCliente = 0;
         int opcaoContato = 0;
-        int opcaoRelatorio=0;
-        int clientesTamanhoMatriz=0;
-        String[][] clientes = new String[1][8];
+        int opcaoRelatorio = 0;
+        int clientesTamanhoMatriz = 0;
+        String[][] clientes = new String[0][8];
         String[][] contatos = new String[0][5];
         do {
             opcaoPrincipal = menuPrincipal(sc);
@@ -30,16 +30,16 @@ public class ProjetoIntegradorFinal {
                             System.out.println("");
                         } else if (opcaoCliente == 1) {
                             //1 - Incluir cliente
-                            incluirCliente(clientes,sc,clientesTamanhoMatriz);
-                            clientes=aumentarMatrizClientes(clientes);
+                            clientes = aumentarMatrizClientes(clientes);
+                            incluirCliente(clientes, sc, clientesTamanhoMatriz);
                             clientesTamanhoMatriz++;
                         } else if (opcaoCliente == 2) {
-                            listarClientes(clientes,clientesTamanhoMatriz);
                             //2 - Listar clientes (todos os clientes)
+                            listarClientes(clientes, clientesTamanhoMatriz);
 
                         } else if (opcaoCliente == 3) {
                             //3 - Consultar cliente por código
-
+                            int codigo = buscarClientePorCodigo(clientes, sc);
                         } else if (opcaoCliente == 4) {
                             //4 - Alterar cliente
 
@@ -78,7 +78,7 @@ public class ProjetoIntegradorFinal {
                 case 3: //3 - Relatórios
                     do {
                         opcaoRelatorio = menuRelatorio(sc);
-                        switch (opcaoRelatorio){
+                        switch (opcaoRelatorio) {
                             case 0:
                                 System.out.println("Saindo da aba de Relatorios");
                                 break;
@@ -95,7 +95,7 @@ public class ProjetoIntegradorFinal {
                             default:
                                 System.out.println("Opcao invalida... Por favor digite uma opcao valida.");
                         }
-                    }while(opcaoRelatorio!=0);
+                    } while (opcaoRelatorio != 0);
                     break;
                 default:
                     System.out.println("Opção Inválida");
@@ -148,7 +148,7 @@ public class ProjetoIntegradorFinal {
         return opcao;
     }
 
-    public static int menuRelatorio(Scanner input){
+    public static int menuRelatorio(Scanner input) {
         System.out.println("1 - Listar Clientes");
         System.out.println("2 - Sumarização de Dados");
         System.out.println("0 - Voltar");
@@ -158,53 +158,52 @@ public class ProjetoIntegradorFinal {
 
     //Clientes
     //aumentarMatrizClientes
-    public static String[][] aumentarMatrizClientes(String[][] clientesAntiga){
-        int novaLinha=clientesAntiga.length +1;
-        int novaColuna=clientesAntiga[0].length;
-        String[][]novaMatrizClientes =new String[novaLinha][novaColuna];
-        for (int i=0;i<clientesAntiga.length;i++){
-            for (int j=0;j<clientesAntiga[i].length;j++){
-                novaMatrizClientes[i][j]=clientesAntiga[i][j];
+    public static String[][] aumentarMatrizClientes(String[][] clientesAntiga) {
+        int novaLinha = clientesAntiga.length + 1;
+        String[][] novaMatrizClientes = new String[novaLinha][8];
+        for (int i = 0; i < clientesAntiga.length; i++) {
+            for (int j = 0; j < clientesAntiga[i].length; j++) {
+                novaMatrizClientes[i][j] = clientesAntiga[i][j];
             }
         }
         return novaMatrizClientes;
     }
 
     // incluirCliente
-    public static void incluirCliente(String[][] incluirCliente,Scanner input,int limitadorMatriz){
-        for(int i=limitadorMatriz;i<incluirCliente.length;i++){
-            for(int j=0;j<incluirCliente[i].length;j++){
-                switch (j){
+    public static void incluirCliente(String[][] incluirCliente, Scanner input, int limitadorMatriz) {
+        for (int i = limitadorMatriz; i < incluirCliente.length; i++) {
+            for (int j = 0; j < incluirCliente[i].length; j++) {
+                switch (j) {
                     case 0:
-                        incluirCliente[i][j]=String.valueOf(i+1);
+                        incluirCliente[i][j] = String.valueOf(i + 1);
                         break;
                     case 1:
                         System.out.println("Nome: ");
-                        incluirCliente[i][j]=input.nextLine();
+                        incluirCliente[i][j] = input.nextLine();
                         break;
                     case 2:
                         System.out.println("Cpf: ");
-                        incluirCliente[i][j]=input.nextLine();
+                        incluirCliente[i][j] = input.nextLine();
                         break;
                     case 3:
                         System.out.println("Data de nascimento: ");
-                        incluirCliente[i][j]=input.nextLine();
+                        incluirCliente[i][j] = input.nextLine();
                         break;
                     case 4:
                         System.out.println("Sexo: ");
-                        incluirCliente[i][j]=input.nextLine();
+                        incluirCliente[i][j] = input.nextLine();
                         break;
                     case 5:
                         System.out.println("Cidade: ");
-                        incluirCliente[i][j]=input.nextLine();
+                        incluirCliente[i][j] = input.nextLine();
                         break;
                     case 6:
                         System.out.println("Estado: ");
-                        incluirCliente[i][j]=input.nextLine();
+                        incluirCliente[i][j] = input.nextLine();
                         break;
                     case 7:
                         System.out.println("Status: ");
-                        incluirCliente[i][j]=input.nextLine();
+                        incluirCliente[i][j] = input.nextLine();
                         break;
                 }
             }
@@ -212,23 +211,50 @@ public class ProjetoIntegradorFinal {
     }
 
     //listarClientesTabela
-    public static void listarClientes(String[][]listarCliente, int limitadorNull){
-        System.out.printf("%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|\n","Codigo","Nome","CPF/CNPJ","Data de nascimento","Sexo","Cidade","Estado","Status");
-        for (int i=0;i<limitadorNull;i++){
-            for(int j=0;j<listarCliente[i].length;j++){
-                System.out.printf("%-25.25s|",listarCliente[i][j]);
+    public static void listarClientes(String[][] listarCliente, int tamanhoMatriz) {
+        System.out.printf("%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s\n", "Codigo", "Nome", "CPF/CNPJ", "Data de nascimento", "Sexo", "Cidade", "Estado", "Status");
+        for (int i = 0; i < tamanhoMatriz; i++) {
+            for (int j = 0; j < listarCliente[i].length; j++) {
+                System.out.printf("%-25.25s", listarCliente[i][j]);
             }
             System.out.println();
             System.out.println();
         }
     }
+
     ////[...]
 
     // buscarClientePorCodigo
-    ////[...]
+    public static int buscarClientePorCodigo(String[][] cliente, Scanner input) {
+        System.out.println("Código: ");
+        String n = input.next();
+
+        if (n.equals("0")) {
+            return -1;
+        }
+        if (n != null && !n.isEmpty()) {//verifica se n esta vazio ou nulo
+            System.out.printf("%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s|%-25.25s\n", "Codigo", "Nome", "CPF/CNPJ", "Data de nascimento", "Sexo", "Cidade", "Estado", "Status");
+            for (int i = 0; i < cliente.length; i++) {
+
+                if (cliente[i][0] != null && n.equals(cliente[i][0])) {
+
+                    for (int j = 0; j < cliente[i].length; j++) {
+                        System.out.printf("%-25.25s", cliente[i][j]);
+                    }
+                    System.out.println("");
+                    System.out.println("");
+                    return i;
+                }
+            }
+        }
+
+        System.out.println("Cliente não encontrado.");
+        return -1;
+    }
 
     // alterarCliente
-    ////[...]
+
+////[...]
 
     // apagarCliente
     ////[...]
