@@ -46,7 +46,6 @@ public class ProjetoIntegradorFinal {
     }
 
     // Menu Gerenciar Clientes
-
     public static int[] gerenciarClientes(String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
         int opcaoCliente = 0;
         do {
@@ -65,7 +64,7 @@ public class ProjetoIntegradorFinal {
             } else if (opcaoCliente == 3) {
                 buscarClientePorCodigo(clientes, sc);
             } else if (opcaoCliente == 4) {
-                // alterarCliente
+                alterarCliente(clientes,sc);
             } else if (opcaoCliente == 5) {
                 // apagarCliente
             } else if (opcaoCliente == 6) {
@@ -75,8 +74,7 @@ public class ProjetoIntegradorFinal {
         return new int[]{clientesTamanhoMatriz};
     }
 
-        // Menu Gerenciar Clientes
-
+    // Menu Gerenciar Clientes
     public static int[] gerenciarContatos(String[][] contatos, int contatosTamanhoMatriz, String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
         int opcaoContato = 0;
         do {
@@ -126,7 +124,6 @@ public class ProjetoIntegradorFinal {
     }
 
     // ========== FUNÇÕES ==========
-
     public static int pedirNumero(Scanner input) {
         int numero = input.nextInt();
         input.nextLine();
@@ -176,7 +173,6 @@ public class ProjetoIntegradorFinal {
     }
 
     // ========== CLIENTES ==========
-
     public static String[][] aumentarMatrizClientes(String[][] clientesAntiga) {
         int novaLinha = clientesAntiga.length + 1;
         String[][] novaMatrizClientes = new String[novaLinha][8];
@@ -277,6 +273,67 @@ public class ProjetoIntegradorFinal {
     }
 
     // alterarCliente
+    public static String[][] alterarCliente(String[][] cliente, Scanner input) {
+        System.out.println("Digite o código do Cliente que você deseja alterar os dados: ");
+        String n = input.next();
+        String novaLinha[][]=new String[cliente.length][8];
+        input.nextLine();
+        if (n.equals("0")) {
+            System.out.println("Código Zero ou abaixo de Zero é inválido");;
+            System.out.println("");
+        }
+        if (n != null && !n.isEmpty()) {
+            System.out.println("Alterando os dados da linha: " + n);
+            for (int i = 0; i < cliente.length; i++) {
+                for (int j = 0; j < cliente[i].length; j++) {
+                    if (cliente[i][0] != null && n.equals(cliente[i][0])) {
+                        switch (j) {
+                            case 0:
+                                break;
+                            case 1:
+                                System.out.println("Nome: ");
+                                novaLinha[i][j] = input.nextLine();
+                                cliente[i][j]=novaLinha[i][j];
+                                break;
+                            case 2:
+                                System.out.println("Cpf: ");
+                                novaLinha[i][j] = input.nextLine();
+                                cliente[i][j]=novaLinha[i][j];
+                                break;
+                            case 3:
+                                System.out.println("Data de nascimento: ");
+                                novaLinha[i][j] = input.nextLine();
+                                cliente[i][j]=novaLinha[i][j];
+                                break;
+                            case 4:
+                                System.out.println("Sexo: ");
+                                novaLinha[i][j] = input.nextLine();
+                                cliente[i][j]=novaLinha[i][j];
+                                break;
+                            case 5:
+                                System.out.println("Cidade: ");
+                                novaLinha[i][j] = input.nextLine();
+                                cliente[i][j]=novaLinha[i][j];
+                                break;
+                            case 6:
+                                System.out.println("Estado: ");
+                                novaLinha[i][j] = input.nextLine();
+                                cliente[i][j]=novaLinha[i][j];
+                                break;
+                            case 7:
+                                System.out.println("Status: ");
+                                novaLinha[i][j] = input.nextLine();
+                                cliente[i][j]=novaLinha[i][j];
+                                break;
+                        }
+                    }
+
+                }
+            }
+        }
+        return cliente;
+    }
+
     ////[...]
 
     // apagarCliente
@@ -343,7 +400,7 @@ public class ProjetoIntegradorFinal {
         String arquivo = "clientes.csv";
         String[][] matrizClientes = new String[0][8];
         int contador = 0;
-        
+
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             boolean primeiraLinha = true;
@@ -353,14 +410,14 @@ public class ProjetoIntegradorFinal {
                     primeiraLinha = false;
                     continue;
                 }
-                
+
                 // Divide a linha por vírgula
                 String[] dados = linha.split(",");
                 if (dados.length >= 8) {
                     // Aumenta a matriz em 1 linha
                     matrizClientes = aumentarMatrizClientes(matrizClientes);
                     int indice = matrizClientes.length - 1;
-                    
+
                     // Preenche a nova linha com os dados do CSV
                     matrizClientes[indice][0] = dados[0].trim(); // codigo
                     matrizClientes[indice][1] = dados[1].trim(); // nome
@@ -380,7 +437,7 @@ public class ProjetoIntegradorFinal {
         }
         return matrizClientes;
     }
-   
+
     /*
       Carrega contatos do arquivo contatos.csv
       Formato: codigo_contato,codigo_cliente,tipo,valor,status
@@ -389,7 +446,7 @@ public class ProjetoIntegradorFinal {
         String arquivo = "contatos.csv";
         String[][] matrizContatos = new String[0][5];
         int contador = 0;
-        
+
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             boolean primeiraLinha = true;
@@ -399,7 +456,7 @@ public class ProjetoIntegradorFinal {
                     primeiraLinha = false;
                     continue;
                 }
-                
+
                 // Divide a linha por vírgula
                 String[] dados = linha.split(",");
                 if (dados.length >= 5) {
