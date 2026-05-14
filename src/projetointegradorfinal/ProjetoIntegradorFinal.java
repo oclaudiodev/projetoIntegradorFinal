@@ -64,7 +64,7 @@ public class ProjetoIntegradorFinal {
             } else if (opcaoCliente == 3) {
                 buscarClientePorCodigo(clientes, sc);
             } else if (opcaoCliente == 4) {
-                alterarCliente(clientes,sc);
+                alterarCliente(clientes, sc);
             } else if (opcaoCliente == 5) {
                 // apagarCliente
             } else if (opcaoCliente == 6) {
@@ -86,6 +86,9 @@ public class ProjetoIntegradorFinal {
                 System.out.println("");
             } else if (opcaoContato == 1) {
                 // incluirContato
+                contatos = aumentarMatrizContatos(contatos);
+                incluirContato(contatos, sc, contatosTamanhoMatriz, clientes, clientesTamanhoMatriz);
+                contatosTamanhoMatriz++;
             } else if (opcaoContato == 2) {
                 // listarContatosTabela
             } else if (opcaoContato == 3) {
@@ -276,7 +279,7 @@ public class ProjetoIntegradorFinal {
     public static String[][] alterarCliente(String[][] cliente, Scanner input) {
         System.out.println("Digite o código do Cliente que você deseja alterar os dados: ");
         String n = input.next();
-        String novaLinha[][]=new String[cliente.length][8];
+        String novaLinha[][] = new String[cliente.length][8];
         input.nextLine();
         if (n.equals("0")) {
             System.out.println("Código Zero ou abaixo de Zero é inválido");;
@@ -293,37 +296,37 @@ public class ProjetoIntegradorFinal {
                             case 1:
                                 System.out.println("Nome: ");
                                 novaLinha[i][j] = input.nextLine();
-                                cliente[i][j]=novaLinha[i][j];
+                                cliente[i][j] = novaLinha[i][j];
                                 break;
                             case 2:
                                 System.out.println("Cpf: ");
                                 novaLinha[i][j] = input.nextLine();
-                                cliente[i][j]=novaLinha[i][j];
+                                cliente[i][j] = novaLinha[i][j];
                                 break;
                             case 3:
                                 System.out.println("Data de nascimento: ");
                                 novaLinha[i][j] = input.nextLine();
-                                cliente[i][j]=novaLinha[i][j];
+                                cliente[i][j] = novaLinha[i][j];
                                 break;
                             case 4:
                                 System.out.println("Sexo: ");
                                 novaLinha[i][j] = input.nextLine();
-                                cliente[i][j]=novaLinha[i][j];
+                                cliente[i][j] = novaLinha[i][j];
                                 break;
                             case 5:
                                 System.out.println("Cidade: ");
                                 novaLinha[i][j] = input.nextLine();
-                                cliente[i][j]=novaLinha[i][j];
+                                cliente[i][j] = novaLinha[i][j];
                                 break;
                             case 6:
                                 System.out.println("Estado: ");
                                 novaLinha[i][j] = input.nextLine();
-                                cliente[i][j]=novaLinha[i][j];
+                                cliente[i][j] = novaLinha[i][j];
                                 break;
                             case 7:
                                 System.out.println("Status: ");
                                 novaLinha[i][j] = input.nextLine();
-                                cliente[i][j]=novaLinha[i][j];
+                                cliente[i][j] = novaLinha[i][j];
                                 break;
                         }
                     }
@@ -356,7 +359,49 @@ public class ProjetoIntegradorFinal {
     }
 
     //incluirContato
-    ////[...]
+    public static void incluirContato(String[][] contatos, Scanner input, int limitadorMatriz, String[][] clientes, int clientesTamanhoMatriz) {
+        for (int i = limitadorMatriz; i < contatos.length; i++) {
+            for (int j = 0; j < contatos[i].length; j++) {
+                switch (j) {
+                    case 0:
+                        contatos[i][j] = String.valueOf(i + 1);
+                        break;
+                    case 1:
+                        String codigoCliente = "";
+                        do {
+
+                            System.out.println("Código do Cliente: ");
+                            codigoCliente = input.nextLine();
+                            int indice = -1;
+                            for (int k = 0; k < clientesTamanhoMatriz; k++) {
+                                if (clientes[k][0] != null && codigoCliente.equals(clientes[k][0])) {
+                                    indice = k;
+                                    break;
+                                }
+                            }
+                            if (indice == -1) {
+                                System.out.println("Cliente não encontrado. Por favor, informa um código correto. ");
+                                codigoCliente = "";
+                            }
+                        } while (codigoCliente.equals(""));
+                        contatos[i][j] = codigoCliente;
+                        break;
+                    case 2:
+                        System.out.println("Tipo (ex: EMAIL, TELEFONE, CELULAR): ");
+                        contatos[i][j] = input.nextLine().toUpperCase();
+                        break;
+                    case 3:
+                        System.out.println("Valor (ex: email@email.com / (11) 99999-9999): ");
+                        contatos[i][j] = input.nextLine();
+                        break;
+                    case 4:
+                        System.out.println("Status (ATIVO/INATIVO): ");
+                        contatos[i][j] = input.nextLine().toUpperCase();
+                        break;
+                }
+            }
+        }
+    }
 
     //listarContatosTabela
     ////[...]
