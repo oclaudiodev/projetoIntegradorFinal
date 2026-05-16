@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class ProjetoIntegradorFinal {
-
+    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int opcaoPrincipal = 0;
@@ -22,12 +22,14 @@ public class ProjetoIntegradorFinal {
                     System.out.println("Encerrando Sistema!");
                     break;
                 case 1:
-                    int[] resultadoClientes = gerenciarClientes(clientes, clientesTamanhoMatriz, sc);
-                    clientesTamanhoMatriz = resultadoClientes[0];
+                    Object[] resultadoClientes = gerenciarClientes(clientes, clientesTamanhoMatriz, sc);
+                    clientes = (String[][]) resultadoClientes[0];
+                    clientesTamanhoMatriz = (int) resultadoClientes[1];
                     break;
                 case 2:
-                    int[] resultadoContatos = gerenciarContatos(contatos, contatosTamanhoMatriz, clientes, clientesTamanhoMatriz, sc);
-                    contatosTamanhoMatriz = resultadoContatos[0];
+                    Object[] resultadoContatos = gerenciarContatos(contatos, contatosTamanhoMatriz, clientes, clientesTamanhoMatriz, sc);
+                    contatos = (String[][]) resultadoContatos[0];
+                    contatosTamanhoMatriz = (int) resultadoContatos[1];
                     break;
                 case 3:
                     gerenciarRelatorios(clientes, clientesTamanhoMatriz, contatos, contatosTamanhoMatriz, sc);
@@ -46,7 +48,7 @@ public class ProjetoIntegradorFinal {
     }
 
     // Menu Gerenciar Clientes
-    public static int[] gerenciarClientes(String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
+    public static Object[] gerenciarClientes(String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
         int opcaoCliente = 0;
         do {
             opcaoCliente = menuCliente(sc);
@@ -71,11 +73,11 @@ public class ProjetoIntegradorFinal {
                 // ordenarClientesPorNome
             }
         } while (opcaoCliente != 0);
-        return new int[]{clientesTamanhoMatriz};
+        return new Object[]{clientes, clientesTamanhoMatriz};
     }
 
     // Menu Gerenciar Clientes
-    public static int[] gerenciarContatos(String[][] contatos, int contatosTamanhoMatriz, String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
+    public static Object[] gerenciarContatos(String[][] contatos, int contatosTamanhoMatriz, String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
         int opcaoContato = 0;
         do {
             opcaoContato = menuContato(sc);
@@ -85,7 +87,6 @@ public class ProjetoIntegradorFinal {
                 System.out.println("Saindo da aba Contatos");
                 System.out.println("");
             } else if (opcaoContato == 1) {
-                // incluirContato
                 contatos = aumentarMatrizContatos(contatos);
                 incluirContato(contatos, sc, contatosTamanhoMatriz, clientes, clientesTamanhoMatriz);
                 contatosTamanhoMatriz++;
@@ -99,7 +100,7 @@ public class ProjetoIntegradorFinal {
                 // apagarContato
             }
         } while (opcaoContato != 0);
-        return new int[]{contatosTamanhoMatriz};
+        return new Object[]{contatos, contatosTamanhoMatriz};
     }
 
     public static void gerenciarRelatorios(String[][] clientes, int clientesTamanhoMatriz, String[][] contatos, int contatosTamanhoMatriz, Scanner sc) {
