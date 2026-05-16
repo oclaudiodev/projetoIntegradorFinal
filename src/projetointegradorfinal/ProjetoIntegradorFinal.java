@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class ProjetoIntegradorFinal {
-    
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int opcaoPrincipal = 0;
@@ -22,14 +22,12 @@ public class ProjetoIntegradorFinal {
                     System.out.println("Encerrando Sistema!");
                     break;
                 case 1:
-                    Object[] resultadoClientes = gerenciarClientes(clientes, clientesTamanhoMatriz, sc);
-                    clientes = (String[][]) resultadoClientes[0];
-                    clientesTamanhoMatriz = (int) resultadoClientes[1];
+                    int resultadoClientes = gerenciarClientes(clientes, clientesTamanhoMatriz, sc);
+                    clientesTamanhoMatriz = resultadoClientes;
                     break;
                 case 2:
-                    Object[] resultadoContatos = gerenciarContatos(contatos, contatosTamanhoMatriz, clientes, clientesTamanhoMatriz, sc);
-                    contatos = (String[][]) resultadoContatos[0];
-                    contatosTamanhoMatriz = (int) resultadoContatos[1];
+                    int resultadoContatos = gerenciarContatos(contatos, contatosTamanhoMatriz, clientes, clientesTamanhoMatriz, sc);
+                    contatosTamanhoMatriz = resultadoContatos;
                     break;
                 case 3:
                     gerenciarRelatorios(clientes, clientesTamanhoMatriz, contatos, contatosTamanhoMatriz, sc);
@@ -48,7 +46,7 @@ public class ProjetoIntegradorFinal {
     }
 
     // Menu Gerenciar Clientes
-    public static Object[] gerenciarClientes(String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
+    public static int gerenciarClientes(String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
         int opcaoCliente = 0;
         do {
             opcaoCliente = menuCliente(sc);
@@ -68,16 +66,16 @@ public class ProjetoIntegradorFinal {
             } else if (opcaoCliente == 4) {
                 alterarCliente(clientes, sc);
             } else if (opcaoCliente == 5) {
-                // apagarCliente
+                clientes = apagarClientes(clientes, sc);
             } else if (opcaoCliente == 6) {
                 // ordenarClientesPorNome
             }
         } while (opcaoCliente != 0);
-        return new Object[]{clientes, clientesTamanhoMatriz};
+        return clientesTamanhoMatriz;
     }
 
     // Menu Gerenciar Clientes
-    public static Object[] gerenciarContatos(String[][] contatos, int contatosTamanhoMatriz, String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
+    public static int gerenciarContatos(String[][] contatos, int contatosTamanhoMatriz, String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
         int opcaoContato = 0;
         do {
             opcaoContato = menuContato(sc);
@@ -87,6 +85,7 @@ public class ProjetoIntegradorFinal {
                 System.out.println("Saindo da aba Contatos");
                 System.out.println("");
             } else if (opcaoContato == 1) {
+                // incluirContato
                 contatos = aumentarMatrizContatos(contatos);
                 incluirContato(contatos, sc, contatosTamanhoMatriz, clientes, clientesTamanhoMatriz);
                 contatosTamanhoMatriz++;
@@ -100,7 +99,7 @@ public class ProjetoIntegradorFinal {
                 // apagarContato
             }
         } while (opcaoContato != 0);
-        return new Object[]{contatos, contatosTamanhoMatriz};
+        return contatosTamanhoMatriz;
     }
 
     public static void gerenciarRelatorios(String[][] clientes, int clientesTamanhoMatriz, String[][] contatos, int contatosTamanhoMatriz, Scanner sc) {
@@ -128,27 +127,27 @@ public class ProjetoIntegradorFinal {
     }
 
     // ========== FUNÇÕES ==========
-    public static int pedirNumero(Scanner input) {
-        int numero = input.nextInt();
-        input.nextLine();
+    public static int pedirNumero(Scanner inputNum) {
+        int numero = inputNum.nextInt();
+        inputNum.nextLine();
         return numero;
     }
 
-    public static String pedirTexto(Scanner input) {
-        String texto = input.nextLine();
+    public static String pedirTexto(Scanner inputText) {
+        String texto = inputText.nextLine();
         return texto;
     }
 
-    public static int menuPrincipal(Scanner input) {
+    public static int menuPrincipal(Scanner inputNum) {
         System.out.println("1 - Gerenciar clientes");
         System.out.println("2 - Gerenciar contatos");
         System.out.println("3 - Relatórios");
         System.out.println("4 - Carregar dados de teste (CSV)");
         System.out.println("0 – Sair");
-        return pedirNumero(input);
+        return pedirNumero(inputNum);
     }
 
-    public static int menuCliente(Scanner input) {
+    public static int menuCliente(Scanner inputNum) {
         System.out.println("1 - Incluir cliente");
         System.out.println("2 - Listar clientes (todos os clientes)");
         System.out.println("3 - Consultar cliente por código");
@@ -156,24 +155,24 @@ public class ProjetoIntegradorFinal {
         System.out.println("5 - Apagar cliente");
         System.out.println("6 - Ordenar por nome");
         System.out.println("0 - Voltar");
-        return pedirNumero(input);
+        return pedirNumero(inputNum);
     }
 
-    public static int menuContato(Scanner input) {
+    public static int menuContato(Scanner inputNum) {
         System.out.println("1 - Incluir contato");
         System.out.println("2 - Listar contatos (Todos os clientes)");
         System.out.println("3 - Listar contatos de um cliente");
         System.out.println("4 - Alterar contato");
         System.out.println("5 - Apagar contato");
         System.out.println("0 - Voltar");
-        return pedirNumero(input);
+        return pedirNumero(inputNum);
     }
 
-    public static int menuRelatorio(Scanner input) {
+    public static int menuRelatorio(Scanner inputNum) {
         System.out.println("1 - Listar Clientes");
         System.out.println("2 - Sumarização de Dados");
         System.out.println("0 - Voltar");
-        return pedirNumero(input);
+        return pedirNumero(inputNum);
     }
 
     // ========== CLIENTES ==========
@@ -188,7 +187,7 @@ public class ProjetoIntegradorFinal {
         return novaMatrizClientes;
     }
 
-    public static void incluirCliente(String[][] incluirCliente, Scanner input, int limitadorMatriz) {
+    public static void incluirCliente(String[][] incluirCliente, Scanner inputText, int limitadorMatriz) {
         for (int i = limitadorMatriz; i < incluirCliente.length; i++) {
             for (int j = 0; j < incluirCliente[i].length; j++) {
                 switch (j) {
@@ -197,31 +196,31 @@ public class ProjetoIntegradorFinal {
                         break;
                     case 1:
                         System.out.println("Nome: ");
-                        incluirCliente[i][j] = input.nextLine();
+                        incluirCliente[i][j] = pedirTexto(inputText);
                         break;
                     case 2:
                         System.out.println("Cpf: ");
-                        incluirCliente[i][j] = input.nextLine();
+                        incluirCliente[i][j] = pedirTexto(inputText);
                         break;
                     case 3:
                         System.out.println("Data de nascimento: ");
-                        incluirCliente[i][j] = input.nextLine();
+                        incluirCliente[i][j] = pedirTexto(inputText);
                         break;
                     case 4:
                         System.out.println("Sexo: ");
-                        incluirCliente[i][j] = input.nextLine();
+                        incluirCliente[i][j] = pedirTexto(inputText);
                         break;
                     case 5:
                         System.out.println("Cidade: ");
-                        incluirCliente[i][j] = input.nextLine();
+                        incluirCliente[i][j] = pedirTexto(inputText);
                         break;
                     case 6:
                         System.out.println("Estado: ");
-                        incluirCliente[i][j] = input.nextLine();
+                        incluirCliente[i][j] = pedirTexto(inputText);
                         break;
                     case 7:
                         System.out.println("Status: ");
-                        incluirCliente[i][j] = input.nextLine();
+                        incluirCliente[i][j] = pedirTexto(inputText);
                         break;
                 }
             }
@@ -331,7 +330,6 @@ public class ProjetoIntegradorFinal {
                                 break;
                         }
                     }
-
                 }
             }
         }
@@ -341,6 +339,32 @@ public class ProjetoIntegradorFinal {
     ////[...]
 
     // apagarCliente
+    public static String[][] apagarClientes(String[][] clientes, Scanner sc) {
+
+        System.out.println("Código do Cliente a ser deleteado: ");
+        String codg = pedirTexto(sc);
+        int codigoTransformadoEmNumero = Integer.parseInt(codg);
+        int k = 0;
+        String[][] novaCliente = new String[clientes.length - 1][8];
+
+        if (codigoTransformadoEmNumero <= 0) {
+            System.out.println("Código Zero ou abaixo de Zero é inválido");;
+            System.out.println("");
+        } else if (codg != null) {
+            for (int i = 0; i < clientes.length; i++) {
+                if (codg.equals(clientes[i][0])) {
+                    continue;
+                } else {
+                    for (int j = 0; j < clientes[i].length; j++) {
+                        novaCliente[k][j] = clientes[i][j];   
+                    }
+                    k++;
+                }
+            }
+        }
+        return novaCliente;
+    }
+
     ////[...]
 
     // ordenarClientesPorNome
