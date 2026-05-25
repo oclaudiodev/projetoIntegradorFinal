@@ -68,7 +68,7 @@ public class ProjetoIntegradorFinal {
             } else if (opcaoCliente == 5) {
                 clientes = apagarClientes(clientes, sc);
             } else if (opcaoCliente == 6) {
-                // ordenarClientesPorNome
+                ordenarClientesPorNome(clientes, clientesTamanhoMatriz);
             }
         } while (opcaoCliente != 0);
         return clientes;
@@ -207,7 +207,7 @@ public class ProjetoIntegradorFinal {
                         incluirCliente[i][j] = pedirTexto(inputText);
                         break;
                     case 4:
-                        System.out.println("Sexo: ");
+                        System.out.println("Sexo(M/F): ");
                         incluirCliente[i][j] = pedirTexto(inputText);
                         break;
                     case 5:
@@ -368,10 +368,19 @@ public class ProjetoIntegradorFinal {
     ////[...]
 
     // ordenarClientesPorNome
-    ////[...]
+    public static void ordenarClientesPorNome(String[][] clientes, int tamanhoMatriz) {
+        for (int i = 0; i < tamanhoMatriz - 1; i++) {
+            for (int j = 0; j < tamanhoMatriz - 1 - i; j++) {
+                if (compararNomeCharPorChar(clientes[j][1], clientes[j + 1][1]) > 0) {
+                    trocarLinhas(clientes, j, j + 1);
+                }
+            }
+        }
+        System.out.println("Clientes ordenados por nome!");
+        listarClientes(clientes, tamanhoMatriz);
+    }
 
     // ========== CONTATOS ==========
-
     public static String[][] aumentarMatrizContatos(String[][] matrizContatos) {
         int novaLinha = matrizContatos.length + 1;
         String[][] novaMatriz = new String[novaLinha][5];
@@ -486,15 +495,15 @@ public class ProjetoIntegradorFinal {
         }
     }
 
-       //alterarContato
-    public static void alterarContato(String[][] contatos, Scanner InputText){
+    //alterarContato
+    public static void alterarContato(String[][] contatos, Scanner InputText) {
         listarContatos(contatos);
         System.out.println("Qual Contato deseja Alterar =>");
         String codigoDoContatoAlterar = InputText.nextLine();
-        boolean valid=false;
-        for(int i=0;i<contatos.length;i++){
-            for(int j=0;j<contatos[i].length;j++){
-                if(codigoDoContatoAlterar.equals(contatos[i][0])){
+        boolean valid = false;
+        for (int i = 0; i < contatos.length; i++) {
+            for (int j = 0; j < contatos[i].length; j++) {
+                if (codigoDoContatoAlterar.equals(contatos[i][0])) {
                     valid = true;
                     System.out.println("Contato Encontrado:");
                     imprimirCabecalhoContatos();
@@ -502,54 +511,52 @@ public class ProjetoIntegradorFinal {
                     System.out.println("Deseja trocar esse contato?(S/N)");
                     char decisao = InputText.next().charAt(0);
                     InputText.nextLine();
-                    if(decisao == 'S' || decisao == 's'){
+                    if (decisao == 'S' || decisao == 's') {
                         System.out.println("Digite os novos Dados: ");
                         System.out.print("Tipo: ");
-                        contatos[i][2]=InputText.nextLine();
+                        contatos[i][2] = InputText.nextLine();
                         System.out.print("Valor: ");
-                        contatos[i][3]=InputText.nextLine();
+                        contatos[i][3] = InputText.nextLine();
                         break;
-                    }
-                    else{
+                    } else {
                         System.out.println("Saindo da alteração...");
                         break;
                     }
                 }
             }
         }
-        if(!valid){
+        if (!valid) {
             System.out.println("Contato não encontrado...");
         }
     }
 
     //apagarContato
-    public static String[][] apagarContato(String[][] contatos,Scanner InputText){
+    public static String[][] apagarContato(String[][] contatos, Scanner InputText) {
         listarContatos(contatos);
-        String[][] novoContato = new String[contatos.length-1][contatos[0].length];
+        String[][] novoContato = new String[contatos.length - 1][contatos[0].length];
         System.out.println("Qual contato deseja apagar => ");
         String codigoApagar = InputText.nextLine();
-        for(int i=0;i<contatos.length;i++){
-            if(codigoApagar.equals(contatos[i][0])){
+        for (int i = 0; i < contatos.length; i++) {
+            if (codigoApagar.equals(contatos[i][0])) {
                 System.out.println("Contato Encontrado:");
                 imprimirCabecalhoContatos();
                 System.out.printf("%-15s | %-13s | %-15s | %-22s | %-10s%n", contatos[i][0], contatos[i][1], contatos[i][2], contatos[i][3], contatos[i][4]);
                 System.out.println("Confirmar Exclusão?(S/N)");
                 char decisao = InputText.next().charAt(0);
                 InputText.nextLine();
-                if(decisao == 's' || decisao == 'S'){
-                    int novoIndexador=0;
-                    for(int j=0;j<contatos[i].length;j++){
-                        contatos[i][j]="null";
+                if (decisao == 's' || decisao == 'S') {
+                    int novoIndexador = 0;
+                    for (int j = 0; j < contatos[i].length; j++) {
+                        contatos[i][j] = "null";
                     }
-                    for (int j=0;j<contatos.length;j++) {
-                        if(j!=i){
+                    for (int j = 0; j < contatos.length; j++) {
+                        if (j != i) {
                             novoContato[novoIndexador] = contatos[j];
                             novoIndexador++;
                         }
                     }
                     return novoContato;
-                }
-                else {
+                } else {
                     System.out.println("Saindo da exclusão");
                 }
             }
@@ -559,23 +566,49 @@ public class ProjetoIntegradorFinal {
     }
 
     // ========== AUXILIARES ==========
+    // compararNomeCharPorChar
+    public static int compararNomeCharPorChar(String nome1, String nome2) {
+        for (int i = 0; i < nome1.length() && i < nome2.length(); i++) {
+            if (nome1.charAt(i) < nome2.charAt(i)) {
+                return -1;
+            } else if (nome1.charAt(i) > nome2.charAt(i)) {
+                return 1;
+            }
+        }
+        if (nome1.length() < nome2.length()) {
+            return -1;
+        } else if (nome1.length() > nome2.length()) {
+            return 1;
+        }
+        return 0;
+    }
 
-    //AUXILIARES
+    // copiarLinha
+    public static String[] copiarLinha(String[] linha) {
+        String[] copia = new String[linha.length];
+        for (int i = 0; i < linha.length; i++) {
+            copia[i] = linha[i];
+        }
+        return copia;
+    }
 
+    // limparLinha
+    public static void limparLinha(String[] linha) {
+        for (int i = 0; i < linha.length; i++) {
+            linha[i] = null;
+        }
+    }
 
-    //compararNomeCharPorChar
-    ////[...]
-
-    //copiarLinha
-    ////[...]
-
-    //limparLinha
-    ////[...]
-
-    //trocarLinhas
-    ////[...]
-    ///
-    ///
+    // trocarLinhas
+    public static void trocarLinhas(String[][] matriz, int linha1, int linha2) {
+        String[] temp = copiarLinha(matriz[linha1]);
+        for (int j = 0; j < matriz[linha1].length; j++) {
+            matriz[linha1][j] = matriz[linha2][j];
+        }
+        for (int j = 0; j < matriz[linha2].length; j++) {
+            matriz[linha2][j] = temp[j];
+        }
+    }
     // ========== FUNÇÕES DE CARREGAMENTO DE DADOS ==========
 
 
@@ -583,7 +616,6 @@ public class ProjetoIntegradorFinal {
       Carrega clientes do arquivo clientes.csv
       Formato: codigo,nome,cpf_cnpj,data_nascimento,sexo,cidade,estado,status
      */
-
     private static String[][] carregarClientesCSV() {
         String arquivo = "clientes.csv";
         String[][] matrizClientes = new String[0][8];
