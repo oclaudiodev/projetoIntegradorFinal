@@ -1,11 +1,11 @@
 package projetointegradorfinal;
 
-import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
-public class ProjetoIntegradorFinal{
+public class ProjetoIntegradorFinal {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -59,21 +59,22 @@ public class ProjetoIntegradorFinal{
                 incluirCliente(clientes, sc, clientesTamanhoMatriz);
                 clientesTamanhoMatriz++;
             } else if (opcaoCliente == 2) {
-                listarClientes(clientes, clientesTamanhoMatriz);
+                listarClientes(clientes);
             } else if (opcaoCliente == 3) {
                 buscarClientePorCodigo(clientes, sc);
             } else if (opcaoCliente == 4) {
                 alterarCliente(clientes, sc);
             } else if (opcaoCliente == 5) {
                 clientes = apagarClientes(clientes, sc);
+                clientesTamanhoMatriz = clientes.length;
             } else if (opcaoCliente == 6) {
-                ordenarClientesPorNome(clientes, clientesTamanhoMatriz);
+                ordenarClientesPorNome(clientes);
             }
         } while (opcaoCliente != 0);
         return clientes;
     }
 
-    // Menu Gerenciar Clientes
+    // Menu Gerenciar Contatos
     public static String[][] gerenciarContatos(String[][] contatos, int contatosTamanhoMatriz, String[][] clientes, int clientesTamanhoMatriz, Scanner sc) {
         int opcaoContato = 0;
         do {
@@ -86,7 +87,7 @@ public class ProjetoIntegradorFinal{
             } else if (opcaoContato == 1) {
                 // incluirContato
                 contatos = aumentarMatrizContatos(contatos);
-                incluirContato(contatos, sc, contatosTamanhoMatriz, clientes, clientesTamanhoMatriz);
+                incluirContato(contatos, sc, contatosTamanhoMatriz, clientes);
                 contatosTamanhoMatriz++;
             } else if (opcaoContato == 2) {
                 listarContatos(contatos);
@@ -95,7 +96,8 @@ public class ProjetoIntegradorFinal{
             } else if (opcaoContato == 4) {
                 alterarContato(contatos, sc);
             } else if (opcaoContato == 5) {
-                apagarContato(contatos, sc);
+                contatos = apagarContato(contatos, sc);
+                contatosTamanhoMatriz = contatos.length;
             }
         } while (opcaoContato != 0);
         return contatos;
@@ -111,11 +113,11 @@ public class ProjetoIntegradorFinal{
                     break;
                 case 1:
                     // Listar cliente e total de cliente por contato
-                    relatorioPorCliente(clientes,contatos);
+                    relatorioPorCliente(clientes, contatos);
                     break;
                 case 2:
                     // Sumarização de dados
-                    sumarizaçãoDeDados(clientes,contatos,clientesTamanhoMatriz,contatosTamanhoMatriz);
+                    sumarizaçãoDeDados(clientes, contatos, clientesTamanhoMatriz, contatosTamanhoMatriz);
                     break;
                 default:
                     System.out.println("Opção inválida... Por favor digite uma opcao valida.");
@@ -189,7 +191,7 @@ public class ProjetoIntegradorFinal{
             for (int j = 0; j < incluirCliente[i].length; j++) {
                 switch (j) {
                     case 0:
-                        incluirCliente[i][j] = String.valueOf(i + 1);
+                        incluirCliente[i][j] = String.valueOf(gerarNovoCodigoCliente(incluirCliente));
                         break;
                     case 1:
                         System.out.println("Nome: ");
@@ -238,13 +240,13 @@ public class ProjetoIntegradorFinal{
                 linha[4], linha[5], linha[6], linha[7]);
     }
 
-    public static void listarClientes(String[][] listarCliente, int tamanhoMatriz) {
-        if (tamanhoMatriz == 0) {
+    public static void listarClientes(String[][] listarCliente) {
+        if (listarCliente.length == 0) {
             System.out.println("Nenhum cliente cadastrado.");
             return;
         }
         imprimirCabecalhoClientes();
-        for (int i = 0; i < tamanhoMatriz; i++) {
+        for (int i = 0; i < listarCliente.length; i++) {
             imprimirLinha(listarCliente[i]);
         }
         System.out.println();
@@ -333,7 +335,24 @@ public class ProjetoIntegradorFinal{
         return cliente;
     }
 
-    ////[...]
+    public static int gerarNovoCodigoCliente(String[][] clientes) {
+
+        int maiorCodigo = 0;
+
+        for (int i = 0; i < clientes.length; i++) {
+
+            if (clientes[i][0] != null) {
+
+                int codigoAtual = Integer.parseInt(clientes[i][0]);
+
+                if (codigoAtual > maiorCodigo) {
+                    maiorCodigo = codigoAtual;
+                }
+            }
+        }
+
+        return maiorCodigo + 1;
+    }
 
     // apagarCliente
     public static String[][] apagarClientes(String[][] clientes, Scanner sc) {
@@ -342,39 +361,55 @@ public class ProjetoIntegradorFinal{
         String codg = pedirTexto(sc);
         int codigoTransformadoEmNumero = Integer.parseInt(codg);
         int k = 0;
-        String[][] novaCliente = new String[clientes.length - 1][8];
+        boolean encontrado = false;
 
         if (codigoTransformadoEmNumero <= 0) {
             System.out.println("Código Zero ou abaixo de Zero é inválido");;
             System.out.println("");
-        } else if (codg != null) {
-            for (int i = 0; i < clientes.length; i++) {
-                if (codg.equals(clientes[i][0])) {
-                    continue;
-                } else {
-                    for (int j = 0; j < clientes[i].length; j++) {
-                        novaCliente[k][j] = clientes[i][j];
-                    }
-                    k++;
-                }
+            return clientes;
+        }
+
+        for (int i = 0; i < clientes.length; i++) {
+            if (codg.equals(clientes[i][0])) {
+                encontrado = true;
+                break;
             }
         }
+
+        if (!encontrado) {
+            System.out.println("Cliente não encontrado");
+            return clientes;
+        }
+
+        String[][] novaCliente = new String[clientes.length - 1][8];
+
+        for (int i = 0; i < clientes.length; i++) {
+
+            if (codg.equals(clientes[i][0])) {
+                continue;
+            }
+
+            for (int j = 0; j < clientes[i].length; j++) {
+                novaCliente[k][j] = clientes[i][j];
+            }
+
+            k++;
+        }
+
         return novaCliente;
     }
 
-    ////[...]
-
     // ordenarClientesPorNome
-    public static void ordenarClientesPorNome(String[][] clientes, int tamanhoMatriz) {
-        for (int i = 0; i < tamanhoMatriz - 1; i++) {
-            for (int j = 0; j < tamanhoMatriz - 1 - i; j++) {
+    public static void ordenarClientesPorNome(String[][] clientes) {
+        for (int i = 0; i < clientes.length - 1; i++) {
+            for (int j = 0; j < clientes.length - 1 - i; j++) {
                 if (compararNomeCharPorChar(clientes[j][1], clientes[j + 1][1]) > 0) {
                     trocarLinhas(clientes, j, j + 1);
                 }
             }
         }
         System.out.println("Clientes ordenados por nome!");
-        listarClientes(clientes, tamanhoMatriz);
+        listarClientes(clientes);
     }
 
     // ========== CONTATOS ==========
@@ -390,13 +425,13 @@ public class ProjetoIntegradorFinal{
     }
 
     //incluirContato
-    public static void incluirContato(String[][] contatos, Scanner input, int limitadorMatriz, String[][] clientes, int clientesTamanhoMatriz) {
+    public static void incluirContato(String[][] contatos, Scanner input, int limitadorMatriz, String[][] clientes) {
         int i = limitadorMatriz;
 
         for (int j = 0; j < contatos[i].length; j++) {
             switch (j) {
                 case 0:
-                    contatos[i][j] = String.valueOf(i + 1);
+                    contatos[i][j] = String.valueOf(gerarNovoCodigoContato(contatos));
                     break;
                 case 1:
                     String codigoCliente = "";
@@ -406,7 +441,7 @@ public class ProjetoIntegradorFinal{
 
                         int indice = -1;
 
-                        for (int k = 0; k < clientesTamanhoMatriz; k++) {
+                        for (int k = 0; k < clientes.length; k++) {
                             if (clientes[k][0] != null && codigoCliente.equals(clientes[k][0])) {
                                 indice = k;
                                 break;
@@ -527,8 +562,32 @@ public class ProjetoIntegradorFinal{
         }
     }
 
+    public static int gerarNovoCodigoContato(String[][] contatos) {
+
+        int maiorCodigo = 0;
+
+        for (int i = 0; i < contatos.length; i++) {
+
+            if (contatos[i][0] != null) {
+
+                int codigoAtual = Integer.parseInt(contatos[i][0]);
+
+                if (codigoAtual > maiorCodigo) {
+                    maiorCodigo = codigoAtual;
+                }
+            }
+        }
+
+        return maiorCodigo + 1;
+    }
+
     //apagarContato
     public static String[][] apagarContato(String[][] contatos, Scanner InputText) {
+        if (contatos.length == 0) {
+            System.out.println("Nenhum contato cadastrado.");
+            return contatos;
+        }
+
         listarContatos(contatos);
         String[][] novoContato = new String[contatos.length - 1][contatos[0].length];
         System.out.println("Qual contato deseja apagar => ");
@@ -543,12 +602,11 @@ public class ProjetoIntegradorFinal{
                 InputText.nextLine();
                 if (decisao == 's' || decisao == 'S') {
                     int novoIndexador = 0;
-                    for (int j = 0; j < contatos[i].length; j++) {
-                        contatos[i][j] = "null";
-                    }
                     for (int j = 0; j < contatos.length; j++) {
                         if (j != i) {
-                            novoContato[novoIndexador] = contatos[j];
+                            for (int k = 0; k < contatos[j].length; k++) {
+                                novoContato[novoIndexador][k] = contatos[j][k];
+                            }
                             novoIndexador++;
                         }
                     }
@@ -562,56 +620,56 @@ public class ProjetoIntegradorFinal{
         return contatos;
     }
 
-       //RELATORIOS
+    //RELATORIOS
     //relatorioPorCliente
-    public static void relatorioPorCliente(String[][] clientesMatriz,String[][] contantosMatriz){
-        int cClientes=clientesMatriz.length;
-        int cContatos=contantosMatriz.length;
-        for(int i=0;i<clientesMatriz.length;i++){
-            for (int j=0;j<contantosMatriz.length;j++) {
+    public static void relatorioPorCliente(String[][] clientesMatriz, String[][] contantosMatriz) {
+        int cClientes = clientesMatriz.length;
+        int cContatos = contantosMatriz.length;
+        for (int i = 0; i < clientesMatriz.length; i++) {
+            for (int j = 0; j < contantosMatriz.length; j++) {
                 if (clientesMatriz[i][0].equals(contantosMatriz[j][1])) {
                     imprimirCabecalhoClientes();
                     imprimirLinha(clientesMatriz[i]);
-                    int cContatoClienteAtual=0;
-                    for (int x=0;x<contantosMatriz.length;x++){
-                        if (clientesMatriz[i][1].equals(contantosMatriz[j][1])){
+                    int cContatoClienteAtual = 0;
+                    for (int x = 0; x < contantosMatriz.length; x++) {
+                        if (clientesMatriz[i][0].equals(contantosMatriz[x][1])) {
                             cContatoClienteAtual++;
                         }
                     }
-                    System.out.println("Total de contatos do cliente: "+cContatoClienteAtual);
+                    System.out.println("Total de contatos do cliente: " + cContatoClienteAtual);
                     System.out.println(" ");
                 }
             }
         }
-        System.out.println("Total de clientes: "+cClientes);
-        System.out.println("Total de contatos: "+cContatos);
+        System.out.println("Total de clientes: " + cClientes);
+        System.out.println("Total de contatos: " + cContatos);
     }
+
     //Sumarização de dados
-    public static void sumarizaçãoDeDados(String[][] matrizClientes,String[][] matrizContatos,int tamanhoCliente,int tamanhoContato){
-        int cClientes=tamanhoCliente,cContatos=tamanhoContato,clientesSemContato=0;
-        float mediaContatos=0;
-        if(cContatos == 0){
+    public static void sumarizaçãoDeDados(String[][] matrizClientes, String[][] matrizContatos, int tamanhoCliente, int tamanhoContato) {
+        int cClientes = tamanhoCliente, cContatos = tamanhoContato, clientesSemContato = 0;
+        float mediaContatos = 0;
+        if (cContatos == 0) {
             mediaContatos = 0;
-        }else{
-            mediaContatos = (float)cClientes/cContatos;
+        } else {
+            mediaContatos = (float) cClientes / cContatos;
         }
-        for(int i=0;i<matrizClientes.length;i++){
-            int tempC=0;
-            for(int j=0;j<matrizContatos.length;j++){
-                if (matrizClientes[i][0].equals(matrizContatos[j][1])){
+        for (int i = 0; i < matrizClientes.length; i++) {
+            int tempC = 0;
+            for (int j = 0; j < matrizContatos.length; j++) {
+                if (matrizClientes[i][0].equals(matrizContatos[j][1])) {
                     tempC++;
                 }
             }
-            if(tempC==0){
+            if (tempC == 0) {
                 clientesSemContato++;
             }
         }
-        System.out.println("Total de Clientes: "+cClientes);
-        System.out.println("Total de Contatos: "+cContatos);
-        System.out.printf("Media de Contatos por Cliente: %.0f\n",mediaContatos);
-        System.out.println("Total de clientes sem contatos: "+clientesSemContato);
+        System.out.println("Total de Clientes: " + cClientes);
+        System.out.println("Total de Contatos: " + cContatos);
+        System.out.printf("Media de Contatos por Cliente: %.0f\n", mediaContatos);
+        System.out.println("Total de clientes sem contatos: " + clientesSemContato);
     }
-
 
     // ========== AUXILIARES ==========
     // compararNomeCharPorChar
