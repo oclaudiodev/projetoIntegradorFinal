@@ -652,7 +652,7 @@ public class ProjetoIntegradorFinal {
         if (cContatos == 0) {
             mediaContatos = 0;
         } else {
-            mediaContatos = (float) cClientes / cContatos;
+            mediaContatos = (float)  cContatos / cClientes;
         }
         for (int i = 0; i < matrizClientes.length; i++) {
             int tempC = 0;
