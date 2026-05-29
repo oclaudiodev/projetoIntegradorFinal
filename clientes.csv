@@ -1,0 +1,11 @@
+codigo,nome,cpf_cnpj,data_nascimento,sexo,cidade,estado,status
+1,Bruno Henrique,234.567.890-11,22/07/1985,M,Rio de Janeiro,RJ,ATIVO
+2,Gabriela Nunes,789.012.345-66,19/04/1998,F,Fortaleza,CE,ATIVO
+3,Diego Rocha ,456.789.012-33,30/01/1988,M,Curitiba,PR,ATIVO
+4,Isabela Ramos,901.234.567-88,11/08/2000,F,Manaus,AM,ATIVO
+5,Ana Paula,123.456.789-00,15/03/1990,F,São Paulo,SP,INATIVO
+6,Jonas Batista ,012.345.678-99,05/02/1993,M,São Paulo,SP,ATIVO
+7,Carla Mendes ,345.678.901-22,08/11/1992,F,Belo Horizonte,MG,INATIVO
+8,Hugo Cardoso ,890.123.456-77,27/12/1975,M,Recife,PE,ATIVO
+9,Felipe Gomes ,678.901.234-55,03/09/1980,M,Salvador,BA,ATIVO
+10,Elisa Teixeira ,567.890.123-44,14/06/1995,F,Porto Alegre,RS,INATIVO

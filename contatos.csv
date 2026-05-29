@@ -1,0 +1,16 @@
+codigo_contato,codigo_cliente,tipo,valor,status
+1,1,EMAIL,anapaualaS@gmail.com,ATIVO
+2,1,CELULAR,(11) 99123-4567,ATIVO
+3,2,EMAIL,bruno@hotmail.com,ATIVO
+4,2,TELEFONE,(21) 3456-7890,INATIVO
+5,3,EMAIL,carlaf@yahoo.com,ATIVO
+6,4,CELULAR,(41) 98765-4321,ATIVO
+7,4,EMAIL,diegoA@gmail.com,ATIVO
+8,5,CELULAR,(51) 99876-5432,ATIVO
+9,6,EMAIL,felipem@outlook.com,INATIVO
+10,7,CELULAR,(85) 97654-3210,ATIVO
+11,7,EMAIL,gabrielans@gmail.com,ATIVO
+12,8,TELEFONE,(81) 3321-9876,ATIVO
+13,9,EMAIL,isabelarms@gmail.com,ATIVO
+14,9,CELULAR,(92) 98888-7777,ATIVO
+15,1,TELEFONE,(11) 3456-7890,INATIVO
