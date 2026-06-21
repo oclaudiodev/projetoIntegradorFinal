@@ -94,9 +94,9 @@ public class ProjetoIntegradorFinal {
             } else if (opcaoContato == 3) {
                 listarContatosPorCliente(clientes, contatos, sc);
             } else if (opcaoContato == 4) {
-                // alterarContato
+                alterarContato(contatos, sc);
             } else if (opcaoContato == 5) {
-                // apagarContato
+                apagarContato(contatos, sc);
             }
         } while (opcaoContato != 0);
         return contatos;
@@ -486,11 +486,77 @@ public class ProjetoIntegradorFinal {
         }
     }
 
-    //alterarContato
-    ////[...]
+       //alterarContato
+    public static void alterarContato(String[][] contatos, Scanner InputText){
+        listarContatos(contatos);
+        System.out.println("Qual Contato deseja Alterar =>");
+        String codigoDoContatoAlterar = InputText.nextLine();
+        boolean valid=false;
+        for(int i=0;i<contatos.length;i++){
+            for(int j=0;j<contatos[i].length;j++){
+                if(codigoDoContatoAlterar.equals(contatos[i][0])){
+                    valid = true;
+                    System.out.println("Contato Encontrado:");
+                    imprimirCabecalhoContatos();
+                    System.out.printf("%-15s | %-13s | %-15s | %-22s | %-10s%n", contatos[i][0], contatos[i][1], contatos[i][2], contatos[i][3], contatos[i][4]);
+                    System.out.println("Deseja trocar esse contato?(S/N)");
+                    char decisao = InputText.next().charAt(0);
+                    InputText.nextLine();
+                    if(decisao == 'S' || decisao == 's'){
+                        System.out.println("Digite os novos Dados: ");
+                        System.out.print("Tipo: ");
+                        contatos[i][2]=InputText.nextLine();
+                        System.out.print("Valor: ");
+                        contatos[i][3]=InputText.nextLine();
+                        break;
+                    }
+                    else{
+                        System.out.println("Saindo da alteração...");
+                        break;
+                    }
+                }
+            }
+        }
+        if(!valid){
+            System.out.println("Contato não encontrado...");
+        }
+    }
 
     //apagarContato
-    ////[...]
+    public static String[][] apagarContato(String[][] contatos,Scanner InputText){
+        listarContatos(contatos);
+        String[][] novoContato = new String[contatos.length-1][contatos[0].length];
+        System.out.println("Qual contato deseja apagar => ");
+        String codigoApagar = InputText.nextLine();
+        for(int i=0;i<contatos.length;i++){
+            if(codigoApagar.equals(contatos[i][0])){
+                System.out.println("Contato Encontrado:");
+                imprimirCabecalhoContatos();
+                System.out.printf("%-15s | %-13s | %-15s | %-22s | %-10s%n", contatos[i][0], contatos[i][1], contatos[i][2], contatos[i][3], contatos[i][4]);
+                System.out.println("Confirmar Exclusão?(S/N)");
+                char decisao = InputText.next().charAt(0);
+                InputText.nextLine();
+                if(decisao == 's' || decisao == 'S'){
+                    int novoIndexador=0;
+                    for(int j=0;j<contatos[i].length;j++){
+                        contatos[i][j]="null";
+                    }
+                    for (int j=0;j<contatos.length;j++) {
+                        if(j!=i){
+                            novoContato[novoIndexador] = contatos[j];
+                            novoIndexador++;
+                        }
+                    }
+                    return novoContato;
+                }
+                else {
+                    System.out.println("Saindo da exclusão");
+                }
+            }
+        }
+        System.out.println("Contato não encontrado...");
+        return contatos;
+    }
 
     // ========== AUXILIARES ==========
 
