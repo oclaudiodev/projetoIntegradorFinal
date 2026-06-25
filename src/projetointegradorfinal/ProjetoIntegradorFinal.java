@@ -5,7 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ProjetoIntegradorFinal {
+public class ProjetoIntegradorFinal{
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -14,7 +14,6 @@ public class ProjetoIntegradorFinal {
         int contatosTamanhoMatriz = 0;
         String[][] clientes = new String[0][8];
         String[][] contatos = new String[0][5];
-
         do {
             opcaoPrincipal = menuPrincipal(sc);
             switch (opcaoPrincipal) {
@@ -112,13 +111,11 @@ public class ProjetoIntegradorFinal {
                     break;
                 case 1:
                     // Listar cliente e total de cliente por contato
+                    relatorioPorCliente(clientes,contatos);
                     break;
                 case 2:
                     // Sumarização de dados
-                    // Total de cliente
-                    // o Total de contatos
-                    // o Contatos por cliente (média)
-                    // o Clientes sem contato
+                    sumarizaçãoDeDados(clientes,contatos,clientesTamanhoMatriz,contatosTamanhoMatriz);
                     break;
                 default:
                     System.out.println("Opção inválida... Por favor digite uma opcao valida.");
@@ -564,6 +561,57 @@ public class ProjetoIntegradorFinal {
         System.out.println("Contato não encontrado...");
         return contatos;
     }
+
+       //RELATORIOS
+    //relatorioPorCliente
+    public static void relatorioPorCliente(String[][] clientesMatriz,String[][] contantosMatriz){
+        int cClientes=clientesMatriz.length;
+        int cContatos=contantosMatriz.length;
+        for(int i=0;i<clientesMatriz.length;i++){
+            for (int j=0;j<contantosMatriz.length;j++) {
+                if (clientesMatriz[i][0].equals(contantosMatriz[j][1])) {
+                    imprimirCabecalhoClientes();
+                    imprimirLinha(clientesMatriz[i]);
+                    int cContatoClienteAtual=0;
+                    for (int x=0;x<contantosMatriz.length;x++){
+                        if (clientesMatriz[i][1].equals(contantosMatriz[j][1])){
+                            cContatoClienteAtual++;
+                        }
+                    }
+                    System.out.println("Total de contatos do cliente: "+cContatoClienteAtual);
+                    System.out.println(" ");
+                }
+            }
+        }
+        System.out.println("Total de clientes: "+cClientes);
+        System.out.println("Total de contatos: "+cContatos);
+    }
+    //Sumarização de dados
+    public static void sumarizaçãoDeDados(String[][] matrizClientes,String[][] matrizContatos,int tamanhoCliente,int tamanhoContato){
+        int cClientes=tamanhoCliente,cContatos=tamanhoContato,clientesSemContato=0;
+        float mediaContatos=0;
+        if(cContatos == 0){
+            mediaContatos = 0;
+        }else{
+            mediaContatos = (float)cClientes/cContatos;
+        }
+        for(int i=0;i<matrizClientes.length;i++){
+            int tempC=0;
+            for(int j=0;j<matrizContatos.length;j++){
+                if (matrizClientes[i][0].equals(matrizContatos[j][1])){
+                    tempC++;
+                }
+            }
+            if(tempC==0){
+                clientesSemContato++;
+            }
+        }
+        System.out.println("Total de Clientes: "+cClientes);
+        System.out.println("Total de Contatos: "+cContatos);
+        System.out.printf("Media de Contatos por Cliente: %.0f\n",mediaContatos);
+        System.out.println("Total de clientes sem contatos: "+clientesSemContato);
+    }
+
 
     // ========== AUXILIARES ==========
     // compararNomeCharPorChar
